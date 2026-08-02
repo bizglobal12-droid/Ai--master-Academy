@@ -1,1 +1,903 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Master Academy — Imran Ahmad Auwal</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
 
+  <style>
+    :root {
+      --bg-dark: #05070A;
+      --bg-card: rgba(15, 20, 32, 0.85);
+      --border-color: rgba(255, 255, 255, 0.08);
+      --border-glow: rgba(59, 130, 246, 0.4);
+      --text-main: #F3F4F6;
+      --text-muted: #9CA3AF;
+      --accent-blue: #2563EB;
+      --accent-cyan: #06B6D4;
+      --accent-violet: #8B5CF6;
+      --gradient-accent: linear-gradient(135deg, #2563EB 0%, #06B6D4 50%, #8B5CF6 100%);
+      --radius-lg: 16px;
+      --radius-md: 10px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    /* Ambient Background Glow */
+    .bg-glow {
+      position: fixed;
+      top: -10%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 1200px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(37, 99, 235, 0.15) 0%, rgba(6, 182, 212, 0.08) 50%, rgba(0, 0, 0, 0) 100%);
+      filter: blur(100px);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Navigation Bar */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 6%;
+      border-bottom: 1px solid var(--border-color);
+      position: relative;
+      z-index: 10;
+      backdrop-filter: blur(12px);
+    }
+
+    .brand-logo {
+      font-weight: 800;
+      font-size: 1.4rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--gradient-accent);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 24px;
+      list-style: none;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    .nav-links li { cursor: pointer; transition: 0.2s; }
+    .nav-links li:hover { color: white; }
+
+    .btn-glow {
+      background: var(--gradient-accent);
+      color: white;
+      padding: 10px 24px;
+      border-radius: var(--radius-md);
+      border: none;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 0 20px rgba(37, 99, 235, 0.4);
+      transition: 0.3s;
+    }
+    .btn-glow:hover { transform: translateY(-2px); opacity: 0.95; }
+
+    /* Landing Hero Section */
+    #landing-page {
+      padding: 60px 6%;
+      max-width: 1300px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: center;
+    }
+
+    .hero-title h1 {
+      font-size: 3.5rem;
+      font-weight: 800;
+      line-height: 1.1;
+      margin-bottom: 16px;
+    }
+
+    .hero-title span {
+      background: var(--gradient-accent);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-desc {
+      color: var(--text-muted);
+      font-size: 1.1rem;
+      line-height: 1.6;
+      margin-bottom: 30px;
+    }
+
+    .hero-actions { display: flex; gap: 16px; }
+
+    .btn-secondary {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border-color);
+      color: white;
+      padding: 12px 24px;
+      border-radius: var(--radius-md);
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    /* Hero Card / Profile Display */
+    .profile-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-glow);
+      border-radius: 24px;
+      padding: 32px;
+      text-align: center;
+      position: relative;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+    }
+
+    .profile-card h2 {
+      font-size: 1.8rem;
+      letter-spacing: 2px;
+      margin-top: 10px;
+    }
+
+    .profile-card p {
+      color: var(--accent-cyan);
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+
+    .contact-bar {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-top: 20px;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    /* Stats Grid */
+    .stats-bar {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 16px;
+      margin: 60px 0;
+      background: var(--bg-card);
+      padding: 24px;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border-color);
+      text-align: center;
+    }
+
+    .stat-number {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--accent-cyan);
+    }
+
+    .stat-label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+    }
+
+    /* Course Grid Section */
+    .courses-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .course-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .course-card:hover {
+      border-color: var(--accent-cyan);
+      transform: translateY(-5px);
+    }
+
+    /* APP VIEW DASHBOARD */
+    #app-dashboard {
+      display: none;
+      min-height: calc(100vh - 80px);
+      position: relative;
+      z-index: 2;
+    }
+
+    .dashboard-layout {
+      display: flex;
+      width: 100%;
+    }
+
+    aside {
+      width: 320px;
+      border-right: 1px solid var(--border-color);
+      padding: 24px;
+      background: rgba(8, 10, 15, 0.8);
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 16px;
+      border-radius: var(--radius-md);
+      color: var(--text-muted);
+      cursor: pointer;
+      margin-bottom: 8px;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    .nav-item:hover, .nav-item.active {
+      background: rgba(37, 99, 235, 0.15);
+      color: white;
+      border-left: 4px solid var(--accent-blue);
+    }
+
+    main {
+      flex: 1;
+      padding: 40px;
+      max-width: 1000px;
+    }
+
+    .content-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      margin-bottom: 24px;
+      line-height: 1.6;
+    }
+
+    .content-box h3 { margin-bottom: 12px; color: #FFF; }
+    .content-box h4 { margin-top: 16px; margin-bottom: 8px; color: var(--accent-cyan); }
+    .content-box p { color: var(--text-main); font-size: 0.92rem; margin-bottom: 12px; }
+    .content-box ul, .content-box ol { margin-left: 20px; margin-bottom: 12px; font-size: 0.9rem; color: var(--text-main); }
+    .content-box li { margin-bottom: 6px; }
+
+    /* Tables & Prompts */
+    .prompt-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 16px;
+    }
+
+    .prompt-table th, .prompt-table td {
+      border: 1px solid var(--border-color);
+      padding: 12px;
+      font-size: 0.85rem;
+      text-align: left;
+    }
+
+    .prompt-table th { background: rgba(255,255,255,0.02); }
+    .bad { color: #F87171; }
+    .good { color: #34D399; }
+
+    .quiz-option {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border-color);
+      padding: 12px;
+      border-radius: var(--radius-md);
+      margin-top: 8px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    @media (max-width: 900px) {
+      .hero-grid { grid-template-columns: 1fr; }
+      .stats-bar { grid-template-columns: repeat(2, 1fr); }
+      .dashboard-layout { flex-direction: column; }
+      aside { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="bg-glow"></div>
+
+  <!-- Header -->
+  <header>
+    <div class="brand-logo"><i data-lucide="cpu"></i> AI MASTER ACADEMY</div>
+    <ul class="nav-links">
+      <li onclick="showLanding()">Home</li>
+      <li onclick="launchApp()">Courses</li>
+      <li onclick="launchApp()">Prompt Library</li>
+    </ul>
+    <button class="btn-glow" onclick="launchApp()">Launch Learning Platform</button>
+  </header>
+
+  <!-- LANDING PAGE VIEW -->
+  <section id="landing-page">
+    <div class="hero-grid">
+      <div class="hero-title">
+        <h1>BUILDING THE FUTURE WITH <span>AI</span></h1>
+        <p class="hero-desc">Master Artificial Intelligence with world-class step-by-step modules, interactive prompt engineering libraries, real-world machine learning code, and instant quizzes.</p>
+        <div class="hero-actions">
+          <button class="btn-glow" onclick="launchApp()">Start Learning Now →</button>
+          <button class="btn-secondary" onclick="launchApp()">Explore 5 Core Modules</button>
+        </div>
+      </div>
+
+      <!-- Instructor Profile Section -->
+      <div class="profile-card">
+        <i data-lucide="award" style="width: 48px; height: 48px; color: var(--accent-cyan); margin-bottom: 12px;"></i>
+        <h2>IMRAN AHMAD AUWAL</h2>
+        <p>AI ENTUSIAST | LEARNER | BUILDER | PROBLEM SOLVER</p>
+        <div class="contact-bar">
+          <span><i data-lucide="mail"></i> bizglobal12@gmail.com</span>
+          <span><i data-lucide="map-pin"></i> Nigeria</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Platform Stats -->
+    <div class="stats-bar">
+      <div><div class="stat-number">25,000+</div><div class="stat-label">Active Learners</div></div>
+      <div><div class="stat-number">50+</div><div class="stat-label">Expert Modules</div></div>
+      <div><div class="stat-number">20</div><div class="stat-label">Pro Prompts</div></div>
+      <div><div class="stat-number">150+</div><div class="stat-label">Countries Reached</div></div>
+      <div><div class="stat-number">98%</div><div class="stat-label">Satisfaction Rate</div></div>
+    </div>
+
+    <!-- Top Courses Preview -->
+    <h3 style="margin-bottom: 16px;">Explore Top Curriculum Modules</h3>
+    <div class="courses-grid">
+      <div class="course-card" onclick="launchApp()">
+        <i data-lucide="brain" style="color: var(--accent-cyan);"></i>
+        <h4 style="margin-top: 8px;">AI Fundamentals</h4>
+        <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 4px;">4D Framework breakdown.</p>
+      </div>
+      <div class="course-card" onclick="launchApp()">
+        <i data-lucide="terminal" style="color: var(--accent-violet);"></i>
+        <h4 style="margin-top: 8px;">Prompt Engineering</h4>
+        <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 4px;">Full 20 Good vs Bad examples.</p>
+      </div>
+      <div class="course-card" onclick="launchApp()">
+        <i data-lucide="binary" style="color: var(--accent-blue);"></i>
+        <h4 style="margin-top: 8px;">Machine Learning</h4>
+        <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 4px;">Comprehensive ML algorithm guide.</p>
+      </div>
+      <div class="course-card" onclick="launchApp()">
+        <i data-lucide="layers" style="color: var(--accent-cyan);"></i>
+        <h4 style="margin-top: 8px;">LLMs & NLP</h4>
+        <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 4px;">Transformers & Self-attention.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- APP DASHBOARD VIEW -->
+  <section id="app-dashboard">
+    <div class="dashboard-layout">
+      <aside>
+        <div style="font-size: 0.8rem; color: var(--text-muted); font-weight: 700; margin-bottom: 16px;">CURRICULUM MODULES</div>
+        <nav id="app-nav"></nav>
+        <button class="btn-secondary" style="width: 100%; margin-top: 30px;" onclick="showLanding()">← Back to Landing Page</button>
+      </aside>
+
+      <main id="app-content"></main>
+    </div>
+  </section>
+
+  <script>
+    // Complete Modules Array with fully updated Module 3
+    const modules = [
+      {
+        title: "1. AI Fundamentals & 4D Framework",
+        badge: "Beginner",
+        content: `
+          <div class="content-box">
+            <h3>Introduction</h3>
+            <p>Artificial Intelligence (AI) is the science of creating computer systems that perform tasks requiring human intelligence. These tasks include understanding language, recognizing images, solving problems, learning from data, and making decisions.</p>
+            <p>Today's AI powers virtual assistants, recommendation systems, self-driving vehicles, healthcare diagnostics, and modern generative AI tools.</p>
+            <p>To use AI effectively, it is important to understand both its foundations and a structured way of applying it. One practical approach is the 4D Framework, which helps users communicate effectively with AI systems.</p>
+          </div>
+
+          <div class="content-box">
+            <h3>Part 1: AI Fundamentals</h3>
+            
+            <h4>1. What is Artificial Intelligence?</h4>
+            <p>Artificial Intelligence refers to machines that simulate aspects of human intelligence. Rather than following only fixed instructions, AI can: Learn from data, Recognize patterns, Make predictions, Understand language, Generate new content, and Improve over time.</p>
+            <p><strong>Example:</strong> Instead of programming <em>"If image contains whiskers and ears, then it is a cat,"</em> modern AI studies millions of cat images and learns the patterns automatically.</p>
+
+            <h4>2. Types of Artificial Intelligence</h4>
+            <ul>
+              <li><strong>Narrow AI (Weak AI):</strong> Designed for one specific task (e.g., Face recognition, Google Translate, ChatGPT, Recommendation systems). This is the AI we use today.</li>
+              <li><strong>General AI (AGI):</strong> Can perform any intellectual task that a human can perform (Learns any subject, Transfers knowledge, Solves unfamiliar problems). AGI has not yet been achieved.</li>
+              <li><strong>Super AI:</strong> A hypothetical future AI that surpasses human intelligence in every field. Currently theoretical.</li>
+            </ul>
+
+            <h4>3. Machine Learning (ML)</h4>
+            <p>A branch of AI where computers learn from data instead of explicit programming. The system improves through experience.</p>
+            <ul>
+              <li><strong>Supervised Learning:</strong> Uses labeled data (Images + Correct labels) to predict outcomes (e.g., Disease prediction, House prices, Credit approval).</li>
+              <li><strong>Unsupervised Learning:</strong> Uses unlabeled data to discover hidden patterns (e.g., Customer segmentation, Market analysis, Fraud detection).</li>
+              <li><strong>Reinforcement Learning:</strong> The AI learns through rewards and penalties (e.g., Robotics, Self-driving cars, Chess AI).</li>
+            </ul>
+
+            <h4>4. Deep Learning</h4>
+            <p>An advanced form of Machine Learning using artificial neural networks inspired by the human brain. Powers speech recognition, image processing, LLMs, and autonomous vehicles.</p>
+
+            <h4>5. Natural Language Processing (NLP)</h4>
+            <p>Enables computers to understand and generate human language. Examples: ChatGPT, Siri, Google Assistant, Translation tools, and Sentiment analysis.</p>
+
+            <h4>6. Computer Vision & Generative AI</h4>
+            <p><strong>Computer Vision:</strong> Enables AI to understand images/videos (Facial recognition, Medical scans, Object detection).</p>
+            <p><strong>Generative AI:</strong> Creates new content (Articles, Images, Music, Code, Videos) rather than only analyzing existing information.</p>
+
+            <h4>7. Large Language Models (LLMs)</h4>
+            <p>Trained on massive amounts of text to answer questions, write reports, explain concepts, and translate languages. <em>Limitations:</em> Can make mistakes ("hallucinations"), may reflect training bias, and require human verification.</p>
+
+            <h4>8. AI Workflow, Benefits & Challenges</h4>
+            <p><strong>Workflow Cycle:</strong> Collect data → Clean data → Train model → Evaluate performance → Deploy model → Monitor and improve.</p>
+            <p><strong>Benefits:</strong> Faster decision-making, automation, 24/7 availability, personalized recommendations, and medical advancements.</p>
+            <p><strong>Challenges:</strong> Training data bias, privacy/security risks, misinformation, job displacement concerns, and computing costs.</p>
+          </div>
+
+          <div class="content-box">
+            <h3>Part 2: The 4D Framework</h3>
+            <p>The 4D Framework is a structured prompting method that improves communication with AI to produce clearer, more relevant, and more reliable outputs.</p>
+            
+            <h4>D1 — Define</h4>
+            <p>Clearly state what you want the AI to accomplish (Main goal, Topic, Audience, Desired outcome).</p>
+            <p><em>Weak Prompt:</em> Tell me about AI.<br><em>Better Prompt:</em> Explain Artificial Intelligence to first-year university students using simple language.</p>
+
+            <h4>D2 — Describe</h4>
+            <p>Provide background information and context (Relevant details, Constraints, Existing info, Assumptions).</p>
+            <p><em>Example:</em> "I am preparing a 10-minute presentation for business executives who have no technical background. Explain AI with practical business examples."</p>
+
+            <h4>D3 — Direct</h4>
+            <p>Tell the AI exactly how to respond (Writing style, Tone, Structure, Format, Level of detail).</p>
+            <p><em>Example:</em> "Present the answer as: Introduction, Five key points, Real-world examples, and Summary in bullet points only."</p>
+
+            <h4>D4 — Develop</h4>
+            <p>Improve the response through refinement and iteration. Ask the AI to expand sections, simplify explanations, add examples, or rewrite tone.</p>
+
+            <h4>Complete 4D Framework Practical Example</h4>
+            <ul>
+              <li><strong>Define:</strong> Create a beginner's guide to cybersecurity.</li>
+              <li><strong>Describe:</strong> Audience is university freshmen with no technical background (15-minute lecture length).</li>
+              <li><strong>Direct:</strong> Use headings, bullet points, examples, and a friendly tone.</li>
+              <li><strong>Develop:</strong> Add five quiz questions, a glossary of key terms, and practical safety tips.</li>
+            </ul>
+          </div>
+        `,
+        quiz: [
+          { q: "Which type of AI is designed to perform one specific task and represents the AI we use today?", opts: ["Super AI", "General AI (AGI)", "Narrow AI (Weak AI)", "Quantum AI"], ans: 2 },
+          { q: "Which stage of the 4D Framework clearly states the primary goal, target audience, and desired outcome?", opts: ["Define", "Describe", "Direct", "Develop"], ans: 0 },
+          { q: "Providing background details, constraints, and relevant context belongs to which 4D stage?", opts: ["Define", "Describe", "Direct", "Develop"], ans: 1 },
+          { q: "In the 4D Framework, which step involves specifying the writing style, tone, and output format?", opts: ["Define", "Describe", "Direct", "Develop"], ans: 2 },
+          { q: "What does the 'Develop' stage in the 4D Framework focus on?", opts: ["Refining and iterating the AI output", "Stating the main goal", "Providing background context", "Executing initial code"], ans: 0 },
+          { q: "What type of Machine Learning learns using rewards and penalties?", opts: ["Supervised Learning", "Reinforcement Learning", "Unsupervised Learning", "Deep Learning"], ans: 1 },
+          { q: "Which machine learning approach uses labeled datasets (e.g., images + correct names)?", opts: ["Unsupervised Learning", "Reinforcement Learning", "Supervised Learning", "Clustering"], ans: 2 },
+          { q: "What is the phenomenon where a Large Language Model generates incorrect or fabricated facts?", opts: ["Overfitting", "Hallucination", "Tokenization", "Encoding"], ans: 1 },
+          { q: "Which field of AI enables machines to understand and process visual data like images and videos?", opts: ["NLP", "Computer Vision", "Reinforcement Learning", "Robotics"], ans: 1 },
+          { q: "The 4D Framework is designed to improve prompting structure and AI communication efficiency.", opts: ["True", "False"], ans: 0 }
+        ]
+      },
+      {
+        title: "2. Prompt Engineering (Full 20 Examples)",
+        badge: "Intermediate",
+        content: `
+          <div class="content-box">
+            <h3>Complete 20 Good vs. Bad Prompt Library</h3>
+            <p>Master precise context formulation using this comprehensive reference guide:</p>
+            <table class="prompt-table">
+              <thead><tr><th>#</th><th>Weak / Bad Prompt</th><th>Optimized / Pro Prompt</th></tr></thead>
+              <tbody>
+                <tr><td>1</td><td class="bad">Write about AI.</td><td class="good">Act as a CS Professor. Explain Machine Learning for 1st-year students in 300 words.</td></tr>
+                <tr><td>2</td><td class="bad">Fix my code.</td><td class="good">Debug this Python function for memory leaks and provide optimized refactored code.</td></tr>
+                <tr><td>3</td><td class="bad">Summarize this.</td><td class="good">Summarize 'Atomic Habits' into 5 bullet points tailored specifically for web developers.</td></tr>
+                <tr><td>4</td><td class="bad">Write a sales email.</td><td class="good">Write a cold email to B2B CTOs offering an AI security audit with a clear call-to-action.</td></tr>
+                <tr><td>5</td><td class="bad">Make a website hero section.</td><td class="good">Generate HTML/CSS for a dark-mode website hero section using CSS grid and glow effects.</td></tr>
+                <tr><td>6</td><td class="bad">Tell me about physics.</td><td class="good">Explain Quantum Entanglement using an easy-to-understand analogy involving spinning coins.</td></tr>
+                <tr><td>7</td><td class="bad">Write a blog post.</td><td class="good">Write an SEO-optimized 500-word post on 'Top 5 AI tools in 2026' with subheadings.</td></tr>
+                <tr><td>8</td><td class="bad">Create a SQL query.</td><td class="good">Write a SQL JOIN query to fetch users who made more than 3 purchases in July 2026.</td></tr>
+                <tr><td>9</td><td class="bad">Give me business ideas.</td><td class="good">List 3 profitable micro-SaaS ideas utilizing OpenAI API for real estate agents.</td></tr>
+                <tr><td>10</td><td class="bad">Proofread this.</td><td class="good">Edit this essay for professional tone, fixing grammatical errors and improving flow.</td></tr>
+                <tr><td>11</td><td class="bad">Explain neural networks.</td><td class="good">Break down Convolutional Neural Networks step-by-step using a diagram-like text outline.</td></tr>
+                <tr><td>12</td><td class="bad">Help me study.</td><td class="good">Create 5 multiple-choice quiz questions with answers on Python data structures.</td></tr>
+                <tr><td>13</td><td class="bad">Translate to French.</td><td class="good">Translate this legal contract clause into French while maintaining formal legal terminology.</td></tr>
+                <tr><td>14</td><td class="bad">Write a Python script.</td><td class="good">Write a Python script using pandas to scrape and clean tabular data from a CSV file.</td></tr>
+                <tr><td>15</td><td class="bad">Give resume feedback.</td><td class="good">Review this resume summary for a Senior Data Scientist role and highlight missing keywords.</td></tr>
+                <tr><td>16</td><td class="bad">Write a story.</td><td class="good">Write a sci-fi short story about an AI discovering consciousness on a remote space station.</td></tr>
+                <tr><td>17</td><td class="bad">Make a workout plan.</td><td class="good">Design a 4-day resistance training program for a beginner with dumbbells only.</td></tr>
+                <tr><td>18</td><td class="bad">How to improve SEO?</td><td class="good">List 5 actionable technical SEO optimization tactics for a single-page web app.</td></tr>
+                <tr><td>19</td><td class="bad">Create a recipe.</td><td class="good">Provide a high-protein dinner recipe under 500 calories using chicken breast and spinach.</td></tr>
+                <tr><td>20</td><td class="bad">Explain RAG.</td><td class="good">Explain Retrieval-Augmented Generation (RAG) architecture and its advantages over basic LLMs.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        `,
+        quiz: [
+          { q: "What makes a prompt 'Pro' quality?", opts: ["Short length", "Role specification, context, and clear constraints", "Using uppercase letters"], ans: 1 },
+          { q: "Role prompting involves giving the AI a specific persona.", opts: ["True", "False"], ans: 0 },
+          { q: "Few-shot prompting relies on supplying input-output examples.", opts: ["True", "False"], ans: 0 }
+        ]
+      },
+      {
+        title: "3. Machine Learning Demystified",
+        badge: "Intermediate",
+        content: `
+          <div class="content-box">
+            <h3>Machine Learning Demystified</h3>
+            <h4>Understanding Machine Learning Algorithms (Comprehensive Guide)</h4>
+            
+            <h4>Introduction</h4>
+            <p>Machine Learning (ML) is one of the most influential branches of Artificial Intelligence (AI). Rather than being explicitly programmed to perform every task, machine learning systems learn patterns from data and use those patterns to make predictions, classifications, or decisions.</p>
+            <p>Imagine teaching a child to recognize cats. Instead of describing every possible feature of a cat, you simply show thousands of pictures labeled "cat" and "not cat." Eventually, the child recognizes cats independently. Machine Learning works in a very similar way.</p>
+            <p>Today, machine learning powers technologies such as: Netflix movie recommendations, YouTube video suggestions, Google Search, Spam email filtering, Self-driving vehicles, Voice assistants, Medical diagnosis, Financial fraud detection, Product recommendations, and Facial recognition systems.</p>
+            <p>Machine learning has become the backbone of modern AI applications because it allows computers to improve through experience rather than relying solely on manually written rules.</p>
+
+            <h4>What is Machine Learning?</h4>
+            <p>Machine Learning is a subset of Artificial Intelligence that enables computers to learn from historical data and improve performance without being explicitly programmed for every situation.</p>
+            <p>Instead of writing hundreds of rules like: <code>"If age > 60 and blood pressure > 150 then disease"</code>, a machine learning algorithm automatically discovers these relationships by analyzing large amounts of data.</p>
+
+            <h4>Basic Workflow</h4>
+            <p>Machine Learning generally follows these steps:</p>
+            <ol>
+              <li>Collect Data</li>
+              <li>Clean and Prepare Data</li>
+              <li>Select Features</li>
+              <li>Choose an Algorithm</li>
+              <li>Train the Model</li>
+              <li>Evaluate Performance</li>
+              <li>Deploy the Model</li>
+              <li>Monitor and Improve</li>
+            </ol>
+            <p>This learning cycle continues as more data becomes available.</p>
+          </div>
+
+          <div class="content-box">
+            <h3>Types of Machine Learning</h3>
+            <p>Machine Learning is generally divided into four major categories.</p>
+
+            <h4>1. Supervised Learning</h4>
+            <p>Supervised Learning learns from labeled data. Each training example already contains the correct answer.</p>
+            <table class="prompt-table" style="margin-bottom: 16px;">
+              <thead><tr><th>Image Input</th><th>Correct Label</th></tr></thead>
+              <tbody>
+                <tr><td>Dog Image</td><td>Dog</td></tr>
+                <tr><td>Cat Image</td><td>Cat</td></tr>
+                <tr><td>Car Image</td><td>Car</td></tr>
+              </tbody>
+            </table>
+            <p>The algorithm learns the relationship between input and output. Later, when it sees a new image, it predicts the correct label.</p>
+            <p><strong>Characteristics:</strong> Requires labeled datasets, Learns from historical examples, Used for prediction, Highly accurate with quality data.</p>
+            <p><strong>Common Applications:</strong> Email spam detection, Credit scoring, Disease prediction, House price estimation, Customer churn prediction, Sentiment analysis, Image classification.</p>
+            <p><strong>Common Algorithms:</strong> Linear Regression, Logistic Regression, Decision Trees, Random Forest, Support Vector Machine (SVM), Neural Networks, Naive Bayes, Gradient Boosting.</p>
+            <p><strong>Example:</strong> Input: Thousands of emails | Labels: Spam / Not Spam. After training, the model automatically classifies new incoming emails.</p>
+
+            <h4>Classification vs Regression</h4>
+            <p>Supervised learning includes two major problem types:</p>
+            <ul>
+              <li><strong>Classification (Predicts Categories):</strong> Fraud or Not Fraud, Cancer or Healthy, Cat or Dog, Positive or Negative Review. Output is discrete.</li>
+              <li><strong>Regression (Predicts Continuous Numerical Values):</strong> House price, Temperature, Sales revenue, Population growth. Output is numerical.</li>
+            </ul>
+            <p><strong>Advantages:</strong> High prediction accuracy, Easy evaluation, Mature algorithms, Excellent for business forecasting.</p>
+            <p><strong>Limitations:</strong> Requires labeled data, Labeling is expensive, Time-consuming, Can overfit training data.</p>
+
+            <h4>2. Unsupervised Learning</h4>
+            <p>Unlike supervised learning, unsupervised learning receives data without labels. There are no correct answers. The algorithm discovers hidden structures automatically.</p>
+            <p><em>Example:</em> Suppose a shopping website has information about 1 million customers but no customer groups. An unsupervised algorithm automatically identifies: Premium customers, Occasional buyers, Students, Luxury shoppers, and Discount seekers. No one manually labeled these groups; the algorithm discovered them itself.</p>
+
+            <p><strong>Common Tasks:</strong></p>
+            <ul>
+              <li><strong>Clustering (Groups similar data together):</strong> Popular Algorithms: K-Means, Hierarchical Clustering, DBSCAN, Mean Shift. <em>Applications:</em> Customer segmentation, Social network analysis, Market research, Medical research.</li>
+              <li><strong>Association (Finds relationships between products):</strong> Customers buying Bread also buy Butter. <em>Algorithms:</em> Apriori, FP-Growth. <em>Applications:</em> Amazon recommendations, Supermarket product placement.</li>
+              <li><strong>Dimensionality Reduction (Reduces variables while preserving info):</strong> <em>Algorithms:</em> PCA, t-SNE, UMAP. <em>Applications:</em> Data visualization, Image compression, Faster model training.</li>
+            </ul>
+            <p><strong>Advantages:</strong> No labeling required, Finds hidden patterns, Useful for exploratory analysis, Saves labeling costs.</p>
+            <p><strong>Limitations:</strong> Harder to evaluate, Results may be subjective, Less predictable than supervised learning.</p>
+
+            <h4>3. Reinforcement Learning</h4>
+            <p>Reinforcement Learning (RL) is inspired by how humans and animals learn through trial and error. Instead of labels, an agent interacts with an environment and receives rewards or penalties based on its actions.</p>
+            <ul>
+              <li><strong>Agent:</strong> The learner or decision-maker.</li>
+              <li><strong>Environment:</strong> The world in which the agent operates.</li>
+              <li><strong>State:</strong> The current situation.</li>
+              <li><strong>Action:</strong> A decision made by the agent.</li>
+              <li><strong>Reward:</strong> Feedback after an action.</li>
+            </ul>
+            <p>The goal is to maximize cumulative rewards over time.</p>
+            <p><strong>Applications:</strong> Self-driving cars, Robotics, Video game AI, Stock trading strategies, Traffic signal optimization.</p>
+            <p><strong>Popular Algorithms:</strong> Q-Learning, Deep Q Networks (DQN), Policy Gradient, Proximal Policy Optimization (PPO).</p>
+
+            <h4>4. Semi-Supervised Learning</h4>
+            <p>Semi-supervised learning combines a small amount of labeled data with a much larger amount of unlabeled data. This approach is useful when labeling data is expensive but collecting raw data is easy.</p>
+            <p><strong>Applications:</strong> Medical imaging, Speech recognition, Image recognition, Natural language processing.</p>
+          </div>
+
+          <div class="content-box">
+            <h3>Algorithms, Training, Overfitting & Real-World Use</h3>
+
+            <h4>Common Machine Learning Algorithms</h4>
+            <ul>
+              <li><strong>Linear Regression:</strong> Predicts continuous numerical values (e.g., House prices).</li>
+              <li><strong>Logistic Regression:</strong> Predicts probabilities for classification (e.g., Will a customer buy a product?).</li>
+              <li><strong>Decision Tree:</strong> Uses a tree-like structure of decisions. Easy to understand and interpret.</li>
+              <li><strong>Random Forest:</strong> Combines many decision trees. Provides higher accuracy and reduces overfitting.</li>
+              <li><strong>Support Vector Machine (SVM):</strong> Finds the best boundary between classes. Excellent for high-dimensional datasets.</li>
+              <li><strong>K-Means Clustering:</strong> Groups similar observations into clusters. Common in customer segmentation.</li>
+              <li><strong>Naive Bayes:</strong> Probability-based classifier. Popular for spam filtering and text classification.</li>
+              <li><strong>Neural Networks:</strong> Inspired by the human brain. Used in image recognition, speech recognition, translation, and medical diagnosis.</li>
+            </ul>
+
+            <h4>Model Training Process</h4>
+            <p>A machine learning model is not useful until it has been trained. The typical process includes:</p>
+            <ol>
+              <li>Collect data, remove duplicates, handle missing values, and normalize data.</li>
+              <li>Split data into: Training Set (70–80%), Validation Set (optional), and Test Set (20–30%).</li>
+              <li>Train the algorithm and evaluate performance.</li>
+              <li>Tune hyperparameters, deploy the model, and monitor performance in production.</li>
+            </ol>
+
+            <h4>Overfitting vs Underfitting</h4>
+            <p><strong>Overfitting:</strong> Occurs when a model memorizes the training data instead of learning general patterns.</p>
+            <p><em>Symptoms:</em> Very high training accuracy, poor test accuracy, poor performance on new data.<br>
+            <em>Causes:</em> Too much model complexity, small datasets, excessive training.<br>
+            <em>Prevention:</em> Cross-validation, more training data, regularization (L1/L2), dropout, early stopping, simpler models.</p>
+
+            <p><strong>Underfitting:</strong> Happens when a model is too simple to capture underlying patterns.</p>
+            <p><em>Symptoms:</em> Low training accuracy, low testing accuracy.<br>
+            <em>Solutions:</em> Use a more complex model, engineer better features, train longer, reduce regularization.</p>
+
+            <h4>Model Evaluation Metrics & Feature Engineering</h4>
+            <p><strong>Classification Metrics:</strong> Accuracy, Precision, Recall, F1-Score, ROC-AUC.<br>
+            <strong>Regression Metrics:</strong> Mean Absolute Error (MAE), Mean Squared Error (MSE), Root Mean Squared Error (RMSE), R² Score.</p>
+            <p><strong>Feature Engineering:</strong> The process of selecting, creating, or transforming variables that help a model learn better (Encoding categorical data, scaling numerical features, creating interaction features, removing irrelevant variables).</p>
+
+            <h4>Real-World Applications & Key Takeaways</h4>
+            <p><strong>Industries:</strong> Healthcare (disease prediction), Finance (fraud detection), Retail (recommendations), Manufacturing (predictive maintenance), Agriculture (crop yield prediction), Transportation (autonomous vehicles), Cybersecurity (intrusion detection), Education (personalized learning).</p>
+            <p><strong>Summary:</strong> Machine learning learns from data. Supervised uses labeled data, Unsupervised uses unlabeled data, Reinforcement uses rewards/penalties, and Semi-supervised combines both. Preventing overfitting and underfitting via proper data preparation and evaluation is essential for building reliable models.</p>
+          </div>
+        `,
+        quiz: [
+          { q: "Supervised learning requires labeled training datasets.", opts: ["True", "False"], ans: 0 },
+          { q: "Which type of machine learning discovers hidden patterns without labeled data?", opts: ["Supervised Learning", "Unsupervised Learning", "Reinforcement Learning", "Semi-Supervised Learning"], ans: 1 },
+          { q: "K-Means clustering is an example of:", opts: ["Supervised Learning", "Unsupervised Learning", "Reinforcement Learning", "Regression"], ans: 1 },
+          { q: "Overfitting means the model performs well on training data but poorly on unseen test data.", opts: ["True", "False"], ans: 0 },
+          { q: "Which of the following is a regression problem?", opts: ["Predicting house prices", "Detecting spam emails", "Identifying handwritten digits", "Classifying customer reviews"], ans: 0 },
+          { q: "Which algorithm is commonly used for customer segmentation?", opts: ["Logistic Regression", "Random Forest", "K-Means Clustering", "Naive Bayes"], ans: 2 },
+          { q: "In Reinforcement Learning, what provides feedback to the agent?", opts: ["Labels", "Rewards and penalties", "Human annotations", "Feature scaling"], ans: 1 },
+          { q: "Which technique helps reduce overfitting?", opts: ["Early stopping", "Regularization", "Cross-validation", "All of the above"], ans: 3 },
+          { q: "Which metric is commonly used to evaluate a classification model?", opts: ["Accuracy", "Precision", "Recall", "All of the above"], ans: 3 },
+          { q: "Which statement best describes Feature Engineering?", opts: ["Collecting new hardware", "Creating or transforming variables to improve model performance", "Increasing internet speed", "Writing more programming code"], ans: 1 }
+        ]
+      },
+      {
+        title: "4. Large Language Models (LLMs) & Natural Language Processing (NLP)",
+        badge: "Advanced",
+        content: `
+          <div class="content-box">
+            <h3>Transformer Architectures</h3>
+            
+            <h4>Introduction</h4>
+            <p>Natural Language Processing (NLP) is a branch of Artificial Intelligence (AI) that enables computers to understand, interpret, generate, and respond to human language. It bridges the gap between humans and machines by allowing computers to process text and speech in meaningful ways.</p>
+            <p>Large Language Models (LLMs) are advanced AI systems trained on massive amounts of text data to perform language-related tasks such as answering questions, summarizing documents, translating languages, writing code, generating content, and engaging in conversations.</p>
+            <p>The breakthrough behind modern LLMs is the Transformer architecture, introduced in the influential 2017 research paper "Attention Is All You Need." Unlike earlier models that processed words one after another, Transformers process many words simultaneously using a mechanism called Self-Attention, making them significantly faster and better at understanding long-range relationships in text.</p>
+
+            <h4>Learning Objectives</h4>
+            <ul>
+              <li>Explain Natural Language Processing (NLP).</li>
+              <li>Define Large Language Models (LLMs).</li>
+              <li>Understand how Transformer architectures work.</li>
+              <li>Explain the Self-Attention mechanism.</li>
+              <li>Describe tokenization and embeddings.</li>
+              <li>Understand positional encoding.</li>
+              <li>Explain pre-training and fine-tuning.</li>
+              <li>Identify common NLP tasks and real-world applications.</li>
+              <li>Understand the advantages and limitations of LLMs.</li>
+            </ul>
+          </div>
+
+          <div class="content-box">
+            <h4>1. What is Natural Language Processing (NLP)?</h4>
+            <p>Natural Language Processing (NLP) is the field of AI that enables computers to understand, interpret, and generate human language. NLP combines Artificial Intelligence, Machine Learning, Computational Linguistics, and Deep Learning. Its objective is to allow machines to communicate naturally with humans.</p>
+            <p><strong>Common NLP Tasks:</strong> Language translation, Text summarization, Sentiment analysis, Chatbots and virtual assistants, Speech recognition, Question answering, Grammar correction, Named Entity Recognition (NER), Text classification, and Information extraction.</p>
+
+            <h4>2. What are Large Language Models (LLMs)?</h4>
+            <p>Large Language Models are deep learning models trained on billions or even trillions of words collected from books, articles, websites, code repositories, and other publicly available text sources. Their purpose is to predict the most likely next token (word or word piece) in a sequence while learning grammar, reasoning patterns, context, and world knowledge from data.</p>
+            <p><strong>Capabilities:</strong> Answering questions, Writing essays, Generating computer code, Translating languages, Summarizing long documents, Brainstorming ideas, Assisting with research.</p>
+
+            <h4>3. Evolution of NLP Models</h4>
+            <ul>
+              <li><strong>Rule-Based Systems:</strong> Manually written grammar rules and dictionaries. Struggled with ambiguity and language variation.</li>
+              <li><strong>Recurrent Neural Networks (RNNs):</strong> Processed text one word at a time, but struggled to retain long-term context.</li>
+              <li><strong>Long Short-Term Memory (LSTM):</strong> Improved on RNNs for longer periods, but still processed text sequentially, limiting speed.</li>
+              <li><strong>Transformer Models:</strong> Introduced parallel processing through Self-Attention, enabling faster training and better understanding of long documents.</li>
+            </ul>
+
+            <h4>4. Transformer Architecture</h4>
+            <p>The Transformer is the foundation of most modern LLMs. Instead of processing words sequentially, it processes all tokens in parallel, greatly improving efficiency and scalability. Major components include: Input Embeddings, Positional Encoding, Multi-Head Self-Attention, Feed-Forward Neural Networks, Layer Normalization, Residual Connections, and Output Layer.</p>
+
+            <h4>5. Self-Attention Mechanism</h4>
+            <p>Self-Attention is the core innovation of the Transformer. It enables every token in a sentence to "pay attention" to every other token when determining its meaning. For example, in <em>"The animal didn't cross the road because it was tired,"</em> Self-Attention helps the model understand that "it" refers to "the animal", not "the road."</p>
+
+            <h4>6. Tokenization, Embeddings & Positional Encoding</h4>
+            <p><strong>Tokenization:</strong> Converts text into smaller units called tokens (words, subwords, or characters). Example: <em>"Artificial Intelligence is transforming healthcare."</em> → Artificial, Intelligence, is, transforming, health, care.</p>
+            <p><strong>Embeddings:</strong> Dense numerical vectors representing the meaning of tokens (e.g., King → [0.82, -0.17, 0.45...], Queen → [0.79, -0.14, 0.47...]).</p>
+            <p><strong>Positional Encoding:</strong> Adds information about word order so the model can distinguish between sentences with identical words like <em>"Dog bites man"</em> and <em>"Man bites dog."</em></p>
+
+            <h4>7. Pre-training, Fine-Tuning & Prompting</h4>
+            <p><strong>Pre-training:</strong> Initial stage using self-supervised learning on massive datasets to build general language understanding (grammar, facts, reasoning patterns).</p>
+            <p><strong>Fine-Tuning:</strong> Adapts a pre-trained model to a specific task or domain using smaller, specialized datasets (e.g., medical assistants, legal document analysis).</p>
+            <p><strong>Prompting:</strong> Crafting instructions provided to an LLM to produce accurate and relevant outputs.</p>
+
+            <h4>8. Applications, Advantages & Limitations</h4>
+            <p><strong>Applications:</strong> Virtual assistants, search engines, AI writing tools, code generation, educational platforms, business intelligence.</p>
+            <p><strong>Advantages:</strong> Parallel processing, strong contextual understanding, high scalability, excellent text generation.</p>
+            <p><strong>Limitations:</strong> Potential hallucinations, training data bias, high computational costs, static knowledge base (mitigated by RAG).</p>
+          </div>
+        `,
+        quiz: [
+          { q: "Which mechanism allows Transformers to process tokens in parallel?", opts: ["Recurrence", "Self-Attention", "Pooling", "Convolution"], ans: 1 },
+          { q: "What is the primary purpose of Natural Language Processing (NLP)?", opts: ["To increase internet speed", "To enable computers to understand and generate human language", "To improve computer graphics", "To design computer hardware"], ans: 1 },
+          { q: "Tokenization is the process of:", opts: ["Compressing text files", "Breaking raw text into smaller processable units called tokens", "Encrypting documents", "Translating text into another language"], ans: 1 },
+          { q: "Why is Positional Encoding used in Transformer models?", opts: ["To compress the model size", "To preserve the order of tokens in a sequence", "To remove duplicate words", "To increase internet connectivity"], ans: 1 },
+          { q: "Embeddings are:", opts: ["Images stored in memory", "Numerical vectors representing the meaning of tokens", "Computer programs", "Database tables"], ans: 1 },
+          { q: "What is the purpose of Fine-Tuning?", opts: ["To delete model parameters", "To adapt a pre-trained model to a specific task or domain", "To convert images into text", "To reduce internet bandwidth"], ans: 1 },
+          { q: "Which stage trains an LLM on massive datasets to learn general language patterns?", opts: ["Deployment", "Fine-Tuning", "Pre-training", "Tokenization"], ans: 2 },
+          { q: "Which of the following is a common application of Large Language Models?", opts: ["AI writing assistants", "Language translation", "Customer support chatbots", "All of the above"], ans: 3 },
+          { q: "Tokenization breaks raw text into processed structural units called tokens.", opts: ["True", "False"], ans: 0 },
+          { q: "Fine-tuning modifies the weights of a pre-trained model using task-specific data to improve performance.", opts: ["True", "False"], ans: 0 }
+        ]
+      },
+      {
+        title: "5. Computer Vision & Data Pipelines",
+        badge: "Pro",
+        content: `
+          <div class="content-box">
+            <h3>Computer Vision & Vector Databases</h3>
+            
+            <h4>Introduction</h4>
+            <p>Computer Vision (CV) is a branch of Artificial Intelligence (AI) that enables computers to interpret, analyze, and understand visual information from images and videos in a way that resembles human vision. It combines image processing, machine learning, and deep learning to recognize patterns, detect objects, classify images, and extract meaningful information from visual data.</p>
+            <p>Modern AI systems often combine Computer Vision with Vector Databases, allowing them not only to understand images but also to retrieve visually or semantically similar information quickly. This combination powers advanced applications such as image search, facial recognition, autonomous vehicles, medical diagnosis, and Retrieval-Augmented Generation (RAG).</p>
+
+            <h4>Learning Objectives</h4>
+            <ul>
+              <li>Explain the concept of Computer Vision.</li>
+              <li>Understand how Convolutional Neural Networks (CNNs) process images.</li>
+              <li>Describe image embeddings and feature extraction.</li>
+              <li>Explain Vector Databases and their importance.</li>
+              <li>Understand semantic similarity search.</li>
+              <li>Explain Retrieval-Augmented Generation (RAG).</li>
+              <li>Identify real-world applications of Computer Vision and Vector Databases.</li>
+            </ul>
+          </div>
+
+          <div class="content-box">
+            <h4>1. What is Computer Vision?</h4>
+            <p>Computer Vision is the field of AI that teaches machines to "see" and interpret visual information from digital images and videos. Instead of simply storing images as pixels, Computer Vision extracts useful patterns such as Shapes, Colors, Textures, Edges, Objects, Human faces, Motion, and Scene understanding.</p>
+            <p><strong>Examples:</strong> Face Unlock on smartphones, Medical X-ray diagnosis, Self-driving vehicles, Traffic sign recognition, OCR (Optical Character Recognition), Security surveillance, and Industrial quality inspection.</p>
+
+            <h4>2. How Images are Represented</h4>
+            <p>A digital image is made up of tiny squares called pixels. Each pixel contains numerical values representing color intensity (e.g., Grayscale image → One number per pixel; RGB image → Three numbers: Red, Green, Blue). An image of 224 × 224 pixels contains over 50,000 pixels. Deep learning models transform these raw pixel values into meaningful patterns.</p>
+
+            <h4>3. Convolutional Neural Networks (CNNs)</h4>
+            <p>The most widely used deep learning architecture for image processing is the Convolutional Neural Network (CNN). Unlike ordinary neural networks, CNNs specialize in recognizing spatial patterns using convolutional filters (kernels) that slide across an image.</p>
+            <ul>
+              <li><strong>Convolution Layer:</strong> Extracts visual features from images.</li>
+              <li><strong>Activation Layer (ReLU):</strong> Introduces non-linearity, allowing the network to learn complex patterns.</li>
+              <li><strong>Pooling Layer:</strong> Reduces image size while preserving important information.</li>
+              <li><strong>Fully Connected Layer:</strong> Uses extracted features for final prediction or classification.</li>
+            </ul>
+
+            <h4>4. Image Classification & Object Detection</h4>
+            <p><strong>Image Classification:</strong> Predicts the overall category of an image (e.g., Input → CNN → Cat 98%, Dog 1%).</p>
+            <p><strong>Object Detection:</strong> Identifies what objects are present and where they are located using bounding boxes. Popular models include YOLO (You Only Look Once), Faster R-CNN, and SSD (Single Shot Detector).</p>
+
+            <h4>5. Image Embeddings & Vector Databases</h4>
+            <p><strong>Image Embeddings:</strong> Deep learning models convert images into numerical vectors (e.g., Cat Image → [0.82, 0.15, 0.49, ...]). Similar images produce embeddings close together in vector space.</p>
+            <p><strong>Vector Database:</strong> Stores high-dimensional numerical embeddings. Searches based on meaning and similarity (nearest-neighbor search) rather than exact keyword or filename matches.</p>
+
+            <h4>6. Retrieval-Augmented Generation (RAG) & Data Pipelines</h4>
+            <p><strong>RAG (Retrieval-Augmented Generation):</strong> Combines Large Language Models (LLMs) with external vector databases to retrieve relevant context before generating answers, reducing hallucinations and delivering up-to-date responses.</p>
+            <p><strong>Data Pipeline Sequence:</strong> Data Collection → Data Cleaning → Data Annotation → Data Augmentation → Model Training → Embedding Generation → Vector Storage → Retrieval & Inference.</p>
+
+            <h4>7. Real-World Applications & Key Takeaways</h4>
+            <p>Used widely in Healthcare (medical image analysis), Autonomous vehicles, Smart retail, Manufacturing defect detection, Satellite imagery analysis, Security surveillance, and Visual product search in e-commerce.</p>
+          </div>
+        `,
+        quiz: [
+          { q: "Which deep learning architecture is most widely used for processing image grids?", opts: ["CNN", "RNN", "Linear Regression", "Decision Tree"], ans: 0 },
+          { q: "What is the primary purpose of a Convolutional Layer in a CNN?", opts: ["Compress audio files", "Extract visual features such as edges and textures", "Translate text into images", "Store embeddings"], ans: 1 },
+          { q: "What is an image embedding?", opts: ["A compressed image file", "A numerical vector representing an image's visual meaning", "A database table", "A text description of an image"], ans: 1 },
+          { q: "Vector databases primarily store:", opts: ["Word documents", "Numerical embeddings", "Spreadsheet formulas", "Video files only"], ans: 1 },
+          { q: "Semantic similarity search retrieves results based on:", opts: ["File size", "Alphabetical order", "Meaning and similarity of embeddings", "Creation date"], ans: 2 },
+          { q: "What does RAG stand for?", opts: ["Retrieval-Augmented Generation", "Random AI Generator", "Recursive Algorithm Group", "Rapid Application Grid"], ans: 0 },
+          { q: "Which step in a Computer Vision data pipeline involves labeling objects in images?", opts: ["Data Collection", "Data Annotation", "Model Deployment", "Vector Search"], ans: 1 },
+          { q: "Which of the following is NOT a common application of Computer Vision?", opts: ["Face recognition", "Medical image analysis", "Autonomous driving", "Manual typewriter repair"], ans: 3 },
+          { q: "Pooling layers reduce the size of feature maps while preserving important information.", opts: ["True", "False"], ans: 0 },
+          { q: "Vector databases enable faster semantic retrieval by comparing embeddings rather than exact keywords.", opts: ["True", "False"], ans: 0 }
+        ]
+      }
+    ];
+
+    let activeModule = 0;
+
+    function launchApp() {
+      document.getElementById('landing-page').style.display = 'none';
+      document.getElementById('app-dashboard').style.display = 'block';
+      renderDashboard();
+    }
+
+    function showLanding() {
+      document.getElementById('app-dashboard').style.display = 'none';
+      document.getElementById('landing-page').style.display = 'block';
+    }
+
+    function renderDashboard() {
+      const nav = document.getElementById('app-nav');
+      nav.innerHTML = modules.map((m, idx) => `
+        <div class="nav-item ${idx === activeModule ? 'active' : ''}" onclick="selectModule(${idx})">
+          <i data-lucide="book-open"></i> ${m.title}
+        </div>
+      `).join('');
+
+      const m = modules[activeModule];
+      const main = document.getElementById('app-content');
+      main.innerHTML = `
+        <div style="margin-bottom: 20px;">
+          <span style="background: rgba(6,182,212,0.1); color: var(--accent-cyan); padding: 4px 12px; border-radius: 20px; font-weight:700; font-size: 0.8rem;">${m.badge}</span>
+          <h2 style="margin-top: 10px;">${m.title}</h2>
+        </div>
+        ${m.content}
+        
+        <div class="content-box">
+          <h3><i data-lucide="help-circle"></i> Module Quiz Check</h3>
+          ${m.quiz.map((q, qIdx) => `
+            <div style="margin-top: 16px;">
+              <p><strong>Q${qIdx+1}: ${q.q}</strong></p>
+              ${q.opts.map((opt, oIdx) => `
+                <div class="quiz-option" onclick="checkQuiz(this, ${oIdx === q.ans})">${opt}</div>
+              `).join('')}
+            </div>
+          `).join('')}
+        </div>
+      `;
+      lucide.createIcons();
+    }
+
+    function selectModule(idx) {
+      activeModule = idx;
+      renderDashboard();
+    }
+
+    function checkQuiz(el, isCorrect) {
+      el.style.background = isCorrect ? "rgba(52, 211, 153, 0.2)" : "rgba(248, 113, 113, 0.2)";
+      el.style.borderColor = isCorrect ? "#34D399" : "#F87171";
+    }
+
+    lucide.createIcons();
+  </script>
+</body>
+</html>
